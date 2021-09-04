@@ -25,7 +25,7 @@ import static com.example.intelmicromanager.constant.SecurityConstant.*;
 import static java.util.Arrays.stream;
 
 @Component
-public class JWTTokenProvider {
+public class JwtTokenProvider {
 
     @Value("${jwt.secret}")
     private String secret;
