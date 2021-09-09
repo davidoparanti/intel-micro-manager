@@ -1,8 +1,8 @@
 package com.example.intelmicromanager.Service.impl;
 
-import com.example.intelmicromanager.Service.UserService;
 import com.example.intelmicromanager.model.User;
 import com.example.intelmicromanager.model.UserPrincipal;
+import com.example.intelmicromanager.Service.UserService;
 import com.example.intelmicromanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

@@ -1,9 +1,9 @@
 package com.example.intelmicromanager.configuration;
 
 import com.example.intelmicromanager.constant.SecurityConstant;
+import com.example.intelmicromanager.filter.JwtAuthorizationFilter;
 import com.example.intelmicromanager.filter.JwtAccessDenialHandler;
 import com.example.intelmicromanager.filter.JwtAuthenticationEntryPoint;
-import com.example.intelmicromanager.filter.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

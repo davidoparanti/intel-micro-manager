@@ -1,11 +1,11 @@
 package com.example.intelmicromanager.exception;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.example.intelmicromanager.exception.domain.UserNotFoundExecution;
+import com.example.intelmicromanager.model.HttpResponse;
 import com.example.intelmicromanager.exception.domain.EmailExitException;
 import com.example.intelmicromanager.exception.domain.EmailNotFoundException;
-import com.example.intelmicromanager.exception.domain.UserNotFoundExecution;
 import com.example.intelmicromanager.exception.domain.UsernameExitException;
-import com.example.intelmicromanager.model.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -130,8 +130,8 @@ public class ExceptionHandling implements ErrorController {
     }
 
     @RequestMapping(ERROR_PATH)
-    public ResponseEntity<HttpResponse> notFound404(Exception exception) {
-        return createHttpResponse(HttpStatus.NOT_FOUND, "There is no mapping for this url");
+    public ResponseEntity<HttpResponse> notFound404() {
+        return createHttpResponse(HttpStatus.NOT_FOUND,   " There is no mapping for this url");
     }
 
 }
