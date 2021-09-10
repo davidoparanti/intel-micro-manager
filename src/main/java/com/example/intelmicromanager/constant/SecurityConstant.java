@@ -1,7 +1,7 @@
 package com.example.intelmicromanager.constant;
 
 public class SecurityConstant {
-    public static final long EXPIRATION_TIME = 5 * 60 * 60 * 1000; //5 days
+    public static final long EXPIRATION_TIME = 5 * 60 * 60 * 1000 * 24; //5 days
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String JWT_TOKEN_HEADER = "Jwt_Token";
     public static final String TOKEN_CANNOT_BE_VERIFIED = "Token cannot be verified";
