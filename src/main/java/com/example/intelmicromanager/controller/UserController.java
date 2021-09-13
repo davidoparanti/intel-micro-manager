@@ -16,6 +16,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+
 import static com.example.intelmicromanager.constant.SecurityConstant.JWT_TOKEN_HEADER;
 
 @RestController
@@ -37,7 +39,7 @@ public class UserController extends ExceptionHandling {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) throws UsernameExitException, EmailExitException {
+    public ResponseEntity<User> register(@RequestBody User user) throws UsernameExitException, EmailExitException, MessagingException {
         User newUser = userService.register(user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }

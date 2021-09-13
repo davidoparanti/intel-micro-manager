@@ -1,5 +1,6 @@
 package com.example.intelmicromanager.Service.impl;
 
+import com.example.intelmicromanager.Service.EmailService;
 import com.example.intelmicromanager.Service.LoginAttemptService;
 import com.example.intelmicromanager.eumeration.Role;
 import com.example.intelmicromanager.exception.domain.EmailExitException;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +41,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final LoginAttemptService loginAttemptService;
+    private final EmailService emailService;
 
 
     @Override
@@ -74,7 +77,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User register(String firstName, String lastName, String username, String email) throws UsernameExitException, EmailExitException {
+    public User register(String firstName, String lastName, String username, String email) throws UsernameExitException, EmailExitException, MessagingException {
         validateNewUsernameAndEmail(EMPTY, username, email);
         User user = new User();
         user.setUserId(generateUserId());
@@ -94,6 +97,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         userRepository.save(user);
         LOGGER.info("New user Password " + password);
+        emailService.sendNewPasswordEmail(username, password, email);
         return user;
     }
 

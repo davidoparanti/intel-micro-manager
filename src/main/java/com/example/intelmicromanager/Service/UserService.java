@@ -4,11 +4,12 @@ import com.example.intelmicromanager.exception.domain.EmailExitException;
 import com.example.intelmicromanager.exception.domain.UsernameExitException;
 import com.example.intelmicromanager.model.User;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 public interface UserService {
 
-    User register(String firstName, String lastName, String username, String email ) throws UsernameExitException, EmailExitException;
+    User register(String firstName, String lastName, String username, String email ) throws UsernameExitException, EmailExitException, MessagingException;
 
     List<User> getUsers();
 
