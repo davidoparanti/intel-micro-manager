@@ -35,10 +35,12 @@ public class ExceptionHandling implements ErrorController {
     private static final String METHOD_IS_NOT_ALLOWED = "This request method is not allowed on this endpoint. Please send send a '%s' request";
     private static final String INTERNAL_SERVER_ERROR_MSG = "An error occurred while processing the request";
     private static final String INCORRECT_CREDENTIALS = "Username / password incorrect. Please try again";
-    private static final String ACCOUNT_DISABLED = "Your account has been disabled. If this is an error, please contact administration";
+    private static final String ACCOUNT_DISABLED = "Your account has been locked. If this is an error, please contact administration";
     private static final String ERROR_PROCESSING_FILE = "Error occurred while processing file";
     private static final String NOT_ENOUGH_PERMISSION = "You do not have enough permission";
+    private static final String NO_URL_MAPPING = "There is no mapping for this url";
     private static final String ERROR_PATH = "/error";
+
 
     @ExceptionHandler(DisabledException.class)
     public ResponseEntity<HttpResponse> accountDisabledExecution() {
@@ -131,7 +133,7 @@ public class ExceptionHandling implements ErrorController {
 
     @RequestMapping(ERROR_PATH)
     public ResponseEntity<HttpResponse> notFound404() {
-        return createHttpResponse(HttpStatus.NOT_FOUND,   " There is no mapping for this url");
+        return createHttpResponse(HttpStatus.NOT_FOUND, NO_URL_MAPPING);
     }
 
 }

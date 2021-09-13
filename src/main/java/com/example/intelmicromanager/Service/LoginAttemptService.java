@@ -31,14 +31,23 @@ public class LoginAttemptService {
         loginAttemptCache.invalidate(username);
     }
 
-    public void addUserToLoginAttemptCache(String username) throws ExecutionException {
+    public void addUserToLoginAttemptCache(String username) {
         int attempt = 0;
-        attempt = ATTEMPT_INCREMENT + loginAttemptCache.get(username);
+        try {
+            attempt = ATTEMPT_INCREMENT + loginAttemptCache.get(username);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         loginAttemptCache.put(username, attempt);
 
     }
 
-    public boolean hasExceededMaxAttempt(String username) throws ExecutionException {
-        return loginAttemptCache.get(username) >= MAXIMUM_NUMBER_OF_ATTEMPTS;
+    public boolean hasExceededMaxAttempt(String username) {
+        try {
+            return loginAttemptCache.get(username) >= MAXIMUM_NUMBER_OF_ATTEMPTS;
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.intelmicromanager.Service.impl;
 
+import com.example.intelmicromanager.Service.LoginAttemptService;
 import com.example.intelmicromanager.eumeration.Role;
 import com.example.intelmicromanager.exception.domain.EmailExitException;
 import com.example.intelmicromanager.exception.domain.UsernameExitException;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static com.example.intelmicromanager.constant.UserImplConstant.*;
 import static org.apache.commons.lang3.StringUtils.*;
@@ -33,9 +35,10 @@ import static org.apache.commons.lang3.StringUtils.*;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private final LoginAttemptService loginAttemptService;
 
 
     @Override
@@ -45,6 +48,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             LOGGER.error(NO_USER_FOUND_BY_USERNAME + username);
             throw new UsernameNotFoundException(NO_USER_FOUND_BY_USERNAME + username);
         } else {
+            validateLoginAttempt(user);
             user.setLoginDateDisplay(user.getLoginDate());
             user.setLoginDate(new Date());
             userRepository.save(user);
@@ -53,6 +57,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             LOGGER.info(FOUND_USER_BY_USERNAME + username);
 
             return userPrincipal;
+        }
+    }
+
+    private void validateLoginAttempt(User user)  {
+        if (user.isNotLocked()) {
+            if (loginAttemptService.hasExceededMaxAttempt(user.getUsername())) {
+                user.setNotLocked(false);
+            } else {
+                user.setNotLocked(true);
+            }
+
+        } else {
+            loginAttemptService.evictUserFromLoginAttemptCache(user.getUsername());
         }
     }
 
