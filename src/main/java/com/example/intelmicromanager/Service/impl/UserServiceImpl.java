@@ -19,13 +19,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static com.example.intelmicromanager.constant.UserImplConstant.*;
 import static org.apache.commons.lang3.StringUtils.*;
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         userRepository.save(user);
         LOGGER.info("New user Password " + password);
-        emailService.sendNewPasswordEmail(username, password, email);
+//        emailService.sendNewPasswordEmail(username, password, email);
         return user;
     }
 
@@ -159,5 +159,30 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
+    }
+
+    @Override
+    public User addNewUser(String firstName, String lastName, String username, String email, String role, boolean isNonLocked, boolean isActive, MultipartFile profileImage) {
+        return null;
+    }
+
+    @Override
+    public User updateUser(String currentUsername, String newFirstName, String NewLastName, String NewUsername, String newEmail, String role, boolean isNonLocked, boolean isActive, MultipartFile profileImage) {
+        return null;
+    }
+
+    @Override
+    public void deleteUser(long id) {
+
+    }
+
+    @Override
+    public void resetPassword(String email) {
+
+    }
+
+    @Override
+    public User updateProfileImage(String username, MultipartFile profileImage) {
+        return null;
     }
 }
