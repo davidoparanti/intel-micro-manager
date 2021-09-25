@@ -6,6 +6,7 @@ import com.example.intelmicromanager.model.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
@@ -21,15 +22,15 @@ public interface UserService {
 
     User addNewUser(String firstName, String lastName,
                     String username, String email, String role,
-                    boolean isNonLocked, boolean isActive, MultipartFile profileImage) throws UsernameExitException, EmailExitException;
+                    boolean isNonLocked, boolean isActive, MultipartFile profileImage) throws UsernameExitException, EmailExitException, IOException;
 
     User updateUser(String currentUsername, String newFirstName, String NewLastName,
                     String NewUsername, String newEmail, String role,
-                    boolean isNonLocked, boolean isActive, MultipartFile profileImage);
+                    boolean isNonLocked, boolean isActive, MultipartFile profileImage) throws UsernameExitException, EmailExitException, IOException;
 
     void deleteUser(long id);
 
-    void resetPassword(String email);
+    void resetPassword(String email) throws EmailExitException, MessagingException;
 
-    User updateProfileImage(String username, MultipartFile profileImage);
+    User updateProfileImage(String username, MultipartFile profileImage) throws UsernameExitException, EmailExitException, IOException;
 }
