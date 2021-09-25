@@ -57,7 +57,22 @@ public class UserController extends ExceptionHandling {
                                            @RequestParam("isNonLocked") String isNonLocked,
                                            @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) throws UsernameExitException, EmailExitException, IOException {
         User newUser = userService.addNewUser(firstName, lastName, username, email, role, Boolean.parseBoolean(isNonLocked), Boolean.parseBoolean(isActive), profileImage);
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
+    }
 
+
+    @PostMapping("/update")
+    public ResponseEntity<User> update(@RequestParam("currentUsername") String currentUsername,
+                                       @RequestParam("firstName") String firstName,
+                                       @RequestParam("lastName") String lastName,
+                                       @RequestParam("username") String username,
+                                       @RequestParam("email") String email,
+                                       @RequestParam("role") String role,
+                                       @RequestParam("isActive") String isActive,
+                                       @RequestParam("isNonLocked") String isNonLocked,
+                                       @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) throws UsernameExitException, EmailExitException, IOException {
+        User updatedUser = userService.updateUser(currentUsername, firstName, lastName, username, email, role, Boolean.parseBoolean(isNonLocked), Boolean.parseBoolean(isActive), profileImage);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
     private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
