@@ -21,7 +21,7 @@ public interface UserService {
 
     User addNewUser(String firstName, String lastName,
                     String username, String email, String role,
-                    boolean isNonLocked, boolean isActive, MultipartFile profileImage);
+                    boolean isNonLocked, boolean isActive, MultipartFile profileImage) throws UsernameExitException, EmailExitException;
 
     User updateUser(String currentUsername, String newFirstName, String NewLastName,
                     String NewUsername, String newEmail, String role,

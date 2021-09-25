@@ -27,6 +27,7 @@ import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.intelmicromanager.constant.FileConstant.DEFAULT_USER_IMAGE_PATH;
 import static com.example.intelmicromanager.constant.UserImplConstant.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setNotLocked(true);
         user.setRole(Role.ROLE_USER.name());
         user.setAuthorities(Role.ROLE_USER.getAuthorities());
-        user.setProfileImageUrl(getTempProfileImage());
+        user.setProfileImageUrl(getTempProfileImage(username));
 
         userRepository.save(user);
         LOGGER.info("New user Password " + password);
@@ -101,8 +102,75 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user;
     }
 
-    private String getTempProfileImage() {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH).toUriString();
+    @Override
+    public User addNewUser(String firstName, String lastName, String username, String email, String role,
+                           boolean isNonLocked, boolean isActive, MultipartFile profileImage) throws UsernameExitException, EmailExitException {
+        validateNewUsernameAndEmail(EMPTY, username, email);
+        User user = new User();
+        String password = generatePassword();
+        user.setUserId(generateUserId());
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setJoinDate(new Date());
+        user.setPassword(encodePassword(password));
+        user.setActive(isActive);
+        user.setNotLocked(isNonLocked);
+        user.setRole(getRoleEnumName(role).name());
+        user.setAuthorities(getRoleEnumName(role).getAuthorities());
+        user.setProfileImageUrl(getTempProfileImage(username));
+        userRepository.save(user);
+        saveProfileImage(user, profileImage);
+        return user;
+    }
+
+    private void saveProfileImage(User user, MultipartFile profileImage) {
+    }
+
+    private Role getRoleEnumName(String role) {
+        return null;
+    }
+
+    @Override
+    public User updateUser(String currentUsername, String newFirstName, String NewLastName, String NewUsername,
+                           String newEmail, String role, boolean isNonLocked, boolean isActive,
+                           MultipartFile profileImage) {
+        return null;
+    }
+
+    @Override
+    public void deleteUser(long id) {
+
+    }
+
+    @Override
+    public void resetPassword(String email) {
+
+    }
+
+    @Override
+    public User updateProfileImage(String username, MultipartFile profileImage) {
+        return null;
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    private String getTempProfileImage(String username) {
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH + username).toUriString();
     }
 
     private String encodePassword(String password) {
@@ -143,46 +211,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             }
             return null;
         }
-    }
-
-
-    @Override
-    public List<User> getUsers() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public User findUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
-    }
-
-    @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
-    }
-
-    @Override
-    public User addNewUser(String firstName, String lastName, String username, String email, String role, boolean isNonLocked, boolean isActive, MultipartFile profileImage) {
-        return null;
-    }
-
-    @Override
-    public User updateUser(String currentUsername, String newFirstName, String NewLastName, String NewUsername, String newEmail, String role, boolean isNonLocked, boolean isActive, MultipartFile profileImage) {
-        return null;
-    }
-
-    @Override
-    public void deleteUser(long id) {
-
-    }
-
-    @Override
-    public void resetPassword(String email) {
-
-    }
-
-    @Override
-    public User updateProfileImage(String username, MultipartFile profileImage) {
-        return null;
     }
 }
