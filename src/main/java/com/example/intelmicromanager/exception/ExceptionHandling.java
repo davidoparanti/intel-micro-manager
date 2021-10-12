@@ -1,18 +1,15 @@
 package com.example.intelmicromanager.exception;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.example.intelmicromanager.exception.domain.UserNotFoundExecution;
+import com.example.intelmicromanager.exception.domain.*;
 import com.example.intelmicromanager.model.HttpResponse;
-import com.example.intelmicromanager.exception.domain.EmailExitException;
-import com.example.intelmicromanager.exception.domain.EmailNotFoundException;
-import com.example.intelmicromanager.exception.domain.UsernameExitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.expression.AccessException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
@@ -52,7 +49,7 @@ public class ExceptionHandling implements ErrorController {
         return createHttpResponse(HttpStatus.FORBIDDEN, ACCOUNT_LOCKED);
     }
 
-    @ExceptionHandler(AccessException.class)
+    @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<HttpResponse> notEnoughPermissionException() {
         return createHttpResponse(HttpStatus.FORBIDDEN, NOT_ENOUGH_PERMISSION);
     }
@@ -122,7 +119,7 @@ public class ExceptionHandling implements ErrorController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<HttpResponse> internalServerErrorException(Exception exception) {
         LOGGER.error(exception.getMessage());
-        return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR_MSG);
+        return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
     }
 
     private ResponseEntity<HttpResponse> createHttpResponse(HttpStatus httpStatus, String message) {

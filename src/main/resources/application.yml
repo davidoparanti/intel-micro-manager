@@ -1,5 +1,7 @@
 jwt:
   secret: 'gold(+ineb+)^"/>kseeme1@#s'
+paystack:
+  key: sk_test_42da6dc739d3dc54596e4bc6a41f4cb163078299;
 
 server:
   port: 8081
@@ -8,10 +10,10 @@ server:
 #      enabled: false
 
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/intel_manager
-    username: root
-    password: goldmine
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/intel_manager
+#    username: root
+#    password: goldmine
   jpa:
     show-sql: true
     hibernate:
